@@ -95,7 +95,40 @@
 \begin{abstract}
 \end{abstract}
 
+%%%%%
+% One of the features our product offers is "macro suggestions". That is, we 
+% suggest the most suitable answers to an unanswered question, out of a set of 
+% templated responses/answers (macros). In order to build our model, we look at 
+% the previous history of tickets (questions & answers that a customer service 
+% team has received and solved) and look for previous answers that are similar to 
+% any of the templated responses we have.
+% 
+% There are a few situations to consider for this problem:
+% - First of all, a reply doesn't necessarily belong to any templated answer 
+% class.
+% - In other cases, only part of the reply will contain a templated response.
+% - Finally, very often a templated response will have been used but slightly 
+% modified to suit the question, the tone of the conversation or the users' 
+% data better.
+% 
+% a) Given a set of templated responses (macros) and an answer chosen from a 
+% ticket at random, describe a method that determines whether this answer belongs 
+% to or is based on one of the templated responses, and if that's the case 
+% classifies it into the right macro.
+% 
+% Now that we are able to find and put into a certain class the questions that 
+% trigger a macro response, we can build our macro classifier for suggesting 
+% macros to new unanswered questions.
+% 
+% b) Assuming you have a dataset of questions, where each one is labelled with the 
+% macro class it belongs to, describe one method you would explore to create a 
+% classifier that can label new, previously unseen questions. Also, don't forget 
+% to explain how you'd engineer the features used to learn your classifier.
+% 
+% Note: We can assume the training set has between 1,000 and 100,000 instances, 
+% and between 10 and 1000 classes.
 
+%%%%%
 
 %
 %  Use this command to print the description
@@ -113,12 +146,97 @@
 
 
 % \section{Related Work}
-% \section{Problem Description} 
+\section{Problem Description} 
 % \label{sec:taskdescription}
 
-\section{Learning to Rank Model}
+
+\subsection{Problem Constraints}
+
+In the problem of suggesting answers out of a pool of question--answer pairs, a 
+few constraints must be considered:
+
+\begin{itemize}
+\item 
+\end{itemize}
+
+
+
+
+
+\section{Model(s) to Classify Answers}
 \label{sec:l2r}
 
+
+\section{Model(s) to Classify Questions}
+% b) Assuming you have a dataset of questions, where each one is labelled with
+% the macro class it belongs to, describe one method you would explore to create 
+% a classifier that can label new, previously unseen questions. Also, don't 
+% forget to explain how you'd engineer the features used to learn your 
+% classifier.
+Problem ``b'' can be formally defined as follows. Let $q\in c_i$ be a 
+previously observed question that belongs to macro-class $c_i$%
+\footnote{What exactly means macro-class (opposite to a simple class) 
+should be discussed.}
+Let $Q$ be a collection of questions, each of which belongs to class $c\in 
+C_I$. Build a classifier which predicts the most likely class of a new 
+question $q_n$. That is, this problems falls into the classical 
+multi-class scenario. Multiple machine learning models exist to approach this 
+kind of problem, ranging from simple decision trees to more sophisticated 
+convolutional models.%
+\footnote{Maybe remove this ``fancy'' convolutional terms}
+The distribution of the classes is currently unknown, which causes the 
+selection of the best model difficult. For instance, if there was a dominant 
+class, that is, a class with a highly representative amount of instances in the 
+training set, even a decision tree could be considered, as this kind of model 
+do well with imbalanced datasets. Still, the first option seems to be to apply 
+a multi-class support vector machine (SVM)\abc{add reference}; for instance, 
+in the form of an ensemble of binary classifiers. That is, $I$ binary SVMs are 
+built, one per class, and the predicted class becomes the one with the 
+maximum score among all the classifiers. 
+
+It is worth noting that this is not posed as a paraphrasing problem. That is, 
+the task is not determining whether $q_i$ and $q_j$ are similar to each 
+other. Instead, the task consists of determining whether the new question $q$ 
+belongs to the same macro-class as a set of questions $Q$. As a result, it 
+is not unreasonable to approach the problem with models such as $k$ nearest 
+neighbors. Of course, before opting for such a model, it would be necessary 
+to prove before hand if a characterisation is at hand which actually causes 
+the instances that belong to the same class to fall close within the vector 
+space. 
+
+\subsection{Preliminary Feature Engineering}
+
+Going back to the differentiation between the proposed task and paraphrasing, 
+if this task was the latter, the core of the features would be composed of a 
+manifold of similarities at lexical, syntactic, and semantic level. Of course, 
+in our case such similarities would still play an important role in the 
+inference ---if $q_1$ belongs to class $i$ and $sim(q_1,q_2)\rightarrow 1$, it 
+is very likely that both questions belong to the same class. 
+
+Another bunch of features I would consider would consist of the so called 
+explicit semantic analysis (ESA)\abc{add reference}. In summary, ESA takes 
+advantage of a large reference corpus, usually containing a maniforold of 
+encyclopedic articles. ESA represents a text as a vector in which each dimension 
+is activated by the similarity between the text and the article contents. As a 
+result, identifying the topics covered in a question might represent valuable 
+information to determine if it belongs to a given macro-class. Obviously, ESA 
+could be computed both at question and at word label. In the later case, the 
+representation vector slice would consists of average over all the words in $q$.
+
+Another subset of features would be vocabulary-based. With statistical weighting 
+models such as the well known $tf$-$idf$, I would identify the likelihood of a 
+given keyword of belonging to given class. In a clustering-like fashion, we can 
+identify the keywords with the highest and lowest association levels to each of 
+the classes. A selection of the most discriminating keywords would be considered 
+as binary features: whether keyword $k$ appears or not in the question. 
+
+% the keywords gain, it seems like in this 
+% case we are more interested in the subject, in the topic of the class. 
+% Therefore, in principle I would opt for ass or which be definition of tven a set 
+% of questions $Q$ belonging to  represents 
+% Both the answer and question identification problems can be defined as a ranking 
+% task. Given a new question $q$, retrieve the most similar (relevant) question 
+% (answer) from a pool of previously existing uly exosn the case of 
 
 %
 % The following two commands are all you need in the
