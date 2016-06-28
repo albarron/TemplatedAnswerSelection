@@ -173,36 +173,34 @@ few constraints must be considered:
 % a classifier that can label new, previously unseen questions. Also, don't 
 % forget to explain how you'd engineer the features used to learn your 
 % classifier.
-Problem ``b'' can be formally defined as follows. Let $q\in c_i$ be a 
-previously observed question that belongs to macro-class $c_i$%
-\footnote{What exactly means macro-class (opposite to a simple class) 
-should be discussed.}
-Let $Q$ be a collection of questions, each of which belongs to class $c\in 
-C_I$. Build a classifier which predicts the most likely class of a new 
-question $q_n$. That is, this problems falls into the classical 
-multi-class scenario. Multiple machine learning models exist to approach this 
-kind of problem, ranging from simple decision trees to more sophisticated 
-convolutional models.%
+Problem ``b'' can be formally defined as follows. Let $q\in c_i$ be a previously 
+observed question that belongs to macro-class $c_i$%
+\footnote{What exactly means macro-class (opposite to a simple class) should be 
+discussed.}
+Let $Q$ be a collection of questions, each of which belongs to class $c\in C_I$. 
+Build a classifier which predicts the most likely class of a new question $q_n$. 
+That is, this problems falls into the classical multi-class scenario. Multiple 
+machine learning models exist to approach this kind of problem, ranging from 
+simple decision trees to more sophisticated convolutional models.%
 \footnote{Maybe remove this ``fancy'' convolutional terms}
-The distribution of the classes is currently unknown, which causes the 
-selection of the best model difficult. For instance, if there was a dominant 
-class, that is, a class with a highly representative amount of instances in the 
-training set, even a decision tree could be considered, as this kind of model 
-do well with imbalanced datasets. Still, the first option seems to be to apply 
-a multi-class support vector machine (SVM)\abc{add reference}; for instance, 
-in the form of an ensemble of binary classifiers. That is, $I$ binary SVMs are 
-built, one per class, and the predicted class becomes the one with the 
-maximum score among all the classifiers. 
+The distribution of the classes is currently unknown, which causes the selection 
+of the best model difficult. For instance, if there was a dominant class, that 
+is, a class with a highly representative amount of instances in the training 
+set, even a decision tree could be considered, as this kind of model do well 
+with imbalanced datasets. Still, the first option seems to be to apply a 
+multi-class support vector machine (SVM)\abc{add reference}; for instance, in 
+the form of an ensemble of binary classifiers. That is, $I$ binary SVMs are 
+built, one per class, and the predicted class becomes the one with the maximum 
+score among all the classifiers. 
 
 It is worth noting that this is not posed as a paraphrasing problem. That is, 
-the task is not determining whether $q_i$ and $q_j$ are similar to each 
-other. Instead, the task consists of determining whether the new question $q$ 
-belongs to the same macro-class as a set of questions $Q$. As a result, it 
-is not unreasonable to approach the problem with models such as $k$ nearest 
-neighbors. Of course, before opting for such a model, it would be necessary 
-to prove before hand if a characterisation is at hand which actually causes 
-the instances that belong to the same class to fall close within the vector 
-space. 
+the task is not determining whether $q_i$ and $q_j$ are similar to each other. 
+Instead, the task consists of determining whether the new question $q$ belongs 
+to the same macro-class as a set of questions $Q$. As a result, it is not 
+unreasonable to approach the problem with models such as $k$ nearest neighbors. 
+Of course, before opting for such a model, it would be necessary to prove before 
+hand if a characterisation is at hand which actually causes the instances that 
+belong to the same class to fall close within the vector space. 
 
 \subsection{Preliminary Feature Engineering}
 
@@ -215,7 +213,7 @@ is very likely that both questions belong to the same class.
 
 Another bunch of features I would consider would consist of the so called 
 explicit semantic analysis (ESA)\abc{add reference}. In summary, ESA takes 
-advantage of a large reference corpus, usually containing a maniforold of 
+advantage of a large reference corpus, usually containing a manifold of 
 encyclopedic articles. ESA represents a text as a vector in which each dimension 
 is activated by the similarity between the text and the article contents. As a 
 result, identifying the topics covered in a question might represent valuable 
@@ -230,7 +228,7 @@ identify the keywords with the highest and lowest association levels to each of
 the classes. A selection of the most discriminating keywords would be considered 
 as binary features: whether keyword $k$ appears or not in the question. 
 
-% the keywords gain, it seems like in this 
+% it seems like in this 
 % case we are more interested in the subject, in the topic of the class. 
 % Therefore, in principle I would opt for ass or which be definition of tven a set 
 % of questions $Q$ belonging to  represents 
@@ -238,6 +236,58 @@ as binary features: whether keyword $k$ appears or not in the question.
 % task. Given a new question $q$, retrieve the most similar (relevant) question 
 % (answer) from a pool of previously existing uly exosn the case of 
 
+\section{Learning Strategy}
+\label{sec:learning}
+% Note: We can assume the training set has between 1,000 and 100,000 instances, 
+% and between 10 and 1000 classes.
+The problem exposes different potential scenarios, which depend on two 
+parameters: number of instances and number of classes. The range of instances 
+lies in the range $s_i\in [1,000, 10,000]$, whereas the number of classes lies 
+in the range $s_c\in [10,1000]$. I will discard the extreme cases in which 
+$s_i\approx s_c$ as a straight learning strategy would hardly learn anything and 
+the problem could be reduced to a 1-nearest-neighbor decision taking. In this 
+case, some structure could be discovered by hierarchical clustering of the 
+training data, which could help to find the most similar instances to the new 
+one. 
+
+Beside these extreme cases, I will explore the potential strategies depending on 
+the two variables in isolation. Let us consider $s_i$: the number of instances. 
+For relatively small amounts of data, that is, a few thousand, I would 
+definitively opt for $n$-fold cross validation (even hold out). This would allow 
+for tuning the parameters of the model and get more stable estimations of the 
+outcomes when facing new instances. The closer to the $10,000$ extreme, the more 
+likely I would opt for a standard three-set partition: training, development, 
+and test. 
+
+Regarding $s_c$, the number of classes, let us assume, just for a moment, that 
+we opt for using support vector machines. I would opt for the standard 
+multi-class setting based in $s_c$ one-vs-the-rest classifiers. Hundreds of 
+classes would require other strategies, such as 
+DAGSVM~\cite{large-margin-dags-for-multiclass-classification}. In this kind of 
+strategy, $s_c(s_c-1)/2$ (and not $s_c^2$!) binary classifiers are arranged 
+within a direct acyclic graph. I used a variation of this strategy some years 
+ago, when facing the standard 20 Newsgroups dataset;%
+\footnote{\url{http://www.cs.cmu.edu/afs/cs/project/theo-20/www/data/news20.html
+}}
+still I consider that it could properly scale to hundreds of classes. Different 
+parallelisation strategies could be applied to run plenty of these classifiers 
+at reasonable temporal cost, even if on commodity hardware.
+
+
+Other more sophisticated strategies have been proposed, such 
+as~\cite{JMLR:v15:gupta14a}, which could be explored.%
+\footnote{Still I have to admit I am not familiar with this kind of technique.}
+Observe that, in order to converge to reasonable models, millions of instances 
+are usually required to when dealing with thousands of classes (cf. Table~4 
+in~\cite{JMLR:v15:gupta14a}).%
+\footnote{I have observed that deep learning approaches (e.g., deep 
+neural networks) promise to deal with problems with thousands of classes as 
+well. Still, as in the discussed case, they also require huge amounts of 
+data}
+% ive ven if the which mall amounts exist for those cases in I would opt for 
+% a multiclass-settingven sim1,000, as th classeshe keywords gain,four 
+
+\section{Implementation Specificities (potential section)}
 %
 % The following two commands are all you need in the
 % initial runs of your .tex file to
