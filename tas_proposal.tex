@@ -65,7 +65,7 @@
 %\crdata{0-12345-67-8/90/01}  % Allows default copyright data (0-89791-88-6/97/05) to be over-ridden - IF NEED BE.
 % --- End of Author Metadata ---
 
-\title{A Proposal for a Question--Answer Selection Model}
+\title{A Question--Answer Selection Model Proposal}
 % Use the \alignauthor commands to handle the names
 % and affiliations for an 'aesthetic maximum' of six authors.
 % Add names, affiliations, addresses for
@@ -164,7 +164,44 @@ few constraints must be considered:
 
 
 \section{Model(s) to Classify Answers}
-\label{sec:l2r}
+\label{sec:answers}
+%  a) Given a set of templated responses (macros) and an answer chosen from a 
+% ticket at random, describe a method that determines whether this answer 
+% belongs to or is based on one of the templated responses, and if that's the 
+% case % classifies it into the right macro
+The collection of the so called macros consist of question-answer pairs $q,a$. 
+The proposed problem is as follows: given a new answer $a'$, extracted from a 
+ticket, and a templated answer $a$,  determine whether $a'$ belongs to the macro 
+class. 
+
+Following a straight-forward approach in which each macro belongs to a class 
+seems not such a good idea, as not enough information would exist to model 
+each class. Instead, I would opt for a paraphrase-like approach. That is, given 
+$a$, and $a'$, are they a paraphrase of each other? In a more relaxed 
+definition, do $a$ and $a'$ convey the same information? This approach would 
+allow to pass from a scenario in which there are as many classes as instances 
+into a binary one: are these answers related or not? Obviously, under this 
+setting the questions' information can be used as well: whether $a,a'$ are 
+related is not the only relevant aspect. Also whether $q,q'$ are. 
+
+Another ``flavour'' of the proposed problem is that of determining whether a 
+answer ticket answer is ``based'' on a templated one. This problem is more 
+similar to that text re-use identification (which most ``famous'' variant is 
+that of plagiarism detection). In this case, the problem is, given text $a$ and 
+$a'$, is $a'$ derived from the contents in $a$? Common approaches to this 
+problem consist of a direct comparison of flexible, still expressive, 
+representations of the texts. For instance, simple representations based on 
+characters or word $n$-grams have shown remarkable performance~\cite{Lyon:04}. 
+More sophisticated models use dotplot~\cite{Basile:2009} and even semantic 
+models~\cite{Gabrilovich:07}, also across languages~\cite{Potthast:11}. 
+Obviously, a combination of these representations can be fed into a machine 
+learning algorithm to learn  to differentiate between potential derivation or 
+not, or simply to generate a ranking with the most likely candidates.% 
+\footnote{An overview of many models for text re-use detection can be found 
+in~\cite{BarronPhd:12}.}
+
+ch class question $q'$, t seems like 
+in this 
 
 
 \section{Model(s) to Classify Questions}
@@ -188,10 +225,10 @@ of the best model difficult. For instance, if there was a dominant class, that
 is, a class with a highly representative amount of instances in the training 
 set, even a decision tree could be considered, as this kind of model do well 
 with imbalanced datasets. Still, the first option seems to be to apply a 
-multi-class support vector machine (SVM)\abc{add reference}; for instance, in 
-the form of an ensemble of binary classifiers. That is, $I$ binary SVMs are 
-built, one per class, and the predicted class becomes the one with the maximum 
-score among all the classifiers. 
+multi-class support vector machine (SVM)~\cite{Joachims:99}; for 
+instance, in the form of an ensemble of binary classifiers. That is, $I$ binary 
+SVMs are built, one per class, and the predicted class becomes the one with the 
+maximum score among all the classifiers. 
 
 It is worth noting that this is not posed as a paraphrasing problem. That is, 
 the task is not determining whether $q_i$ and $q_j$ are similar to each other. 
@@ -212,14 +249,15 @@ inference ---if $q_1$ belongs to class $i$ and $sim(q_1,q_2)\rightarrow 1$, it
 is very likely that both questions belong to the same class. 
 
 Another bunch of features I would consider would consist of the so called 
-explicit semantic analysis (ESA)\abc{add reference}. In summary, ESA takes 
-advantage of a large reference corpus, usually containing a manifold of 
-encyclopedic articles. ESA represents a text as a vector in which each dimension 
-is activated by the similarity between the text and the article contents. As a 
-result, identifying the topics covered in a question might represent valuable 
-information to determine if it belongs to a given macro-class. Obviously, ESA 
-could be computed both at question and at word label. In the later case, the 
-representation vector slice would consists of average over all the words in $q$.
+explicit semantic analysis (ESA)~\cite{Gabrilovich:07}. In summary, 
+ESA takes advantage of a large reference corpus, usually containing a manifold 
+of encyclopedic articles. ESA represents a text as a vector in which each 
+dimension is activated by the similarity between the text and the article 
+contents. As a result, identifying the topics covered in a question might 
+represent valuable information to determine if it belongs to a given 
+macro-class. Obviously, ESA could be computed both at question and at word 
+label. In the later case, the representation vector slice would consists of 
+average over all the words in $q$.
 
 Another subset of features would be vocabulary-based. With statistical weighting 
 models such as the well known $tf$-$idf$, I would identify the likelihood of a 
@@ -228,7 +266,6 @@ identify the keywords with the highest and lowest association levels to each of
 the classes. A selection of the most discriminating keywords would be considered 
 as binary features: whether keyword $k$ appears or not in the question. 
 
-% it seems like in this 
 % case we are more interested in the subject, in the topic of the class. 
 % Therefore, in principle I would opt for ass or which be definition of tven a set 
 % of questions $Q$ belonging to  represents 
@@ -282,8 +319,8 @@ are usually required to when dealing with thousands of classes (cf. Table~4
 in~\cite{JMLR:v15:gupta14a}).%
 \footnote{I have observed that deep learning approaches (e.g., deep 
 neural networks) promise to deal with problems with thousands of classes as 
-well. Still, as in the discussed case, they also require huge amounts of 
-data}
+well. Still, as in the discussed case, they require huge amounts of 
+data.}
 % ive ven if the which mall amounts exist for those cases in I would opt for 
 % a multiclass-settingven sim1,000, as th classeshe keywords gain,four 
 
