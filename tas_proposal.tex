@@ -92,8 +92,8 @@
 
 
 \maketitle
-\begin{abstract}
-\end{abstract}
+% \begin{abstract}
+% \end{abstract}
 
 %%%%%
 % One of the features our product offers is "macro suggestions". That is, we 
@@ -128,36 +128,30 @@
 % Note: We can assume the training set has between 1,000 and 100,000 instances, 
 % and between 10 and 1000 classes.
 
-%%%%%
+\section{Definitions}
+\label{sec:def}
 
-%
-%  Use this command to print the description
-%
-%\printccsdesc
-
-% We no longer use \terms command
-%\terms{Theory}
-%\vspace{-1em}
-%\keywords{Community Question Answering; Learning to Rank, Syntactic Structures}
-
-
-\section{Introduction}
-\label{sec:intro}
+\begin{description}
+\item{Macro} Also known as templated response or answer. Is a previously 
+existing answer that now is part of an answers' repository.
+\item{Ticket} Question--answer pair that a customer service team has received, 
+and solved. f 
+\end{description}
 
 
 % \section{Related Work}
-\section{Problem Description} 
+% \section{Problem Description} 
 % \label{sec:taskdescription}
 
 
-\subsection{Problem Constraints}
-
-In the problem of suggesting answers out of a pool of question--answer pairs, a 
-few constraints must be considered:
-
-\begin{itemize}
-\item 
-\end{itemize}
+% \subsection{Problem Constraints}
+% 
+% In the problem of suggesting answers out of a pool of question--answer pairs, a 
+% few constraints must be considered:
+% 
+% \begin{itemize}
+% \item 
+% \end{itemize}
 
 
 
@@ -165,65 +159,78 @@ few constraints must be considered:
 
 \section{Model(s) to Classify Answers}
 \label{sec:answers}
-%  a) Given a set of templated responses (macros) and an answer chosen from a 
-% ticket at random, describe a method that determines whether this answer 
-% belongs to or is based on one of the templated responses, and if that's the 
-% case % classifies it into the right macro
-The collection of the so called macros consist of question-answer pairs $q,a$. 
-The proposed problem is as follows: given a new answer $a'$, extracted from a 
-ticket, and a templated answer $a$,  determine whether $a'$ belongs to the macro 
-class. 
+
+Problem: Given a set of templated responses (macros) and an answer chosen from a 
+ticket at random, describe a method that determines whether this answer belongs 
+to or is based on one of the templated responses, and if that's the case 
+classifies it into the right macro.
+\medskip
+
+The collection of the so called macros consist of answers $a\in A$. The proposed 
+problem is as follows: given a new answer $a'$, extracted from a ticket, and a 
+templated answer $a$,  determine whether $a'$ belongs to the macro class. 
 
 Following a straight-forward approach in which each macro belongs to a class 
-seems not such a good idea, as not enough information would exist to model 
-each class. Instead, I would opt for a paraphrase-like approach. That is, given 
-$a$, and $a'$, are they a paraphrase of each other? In a more relaxed 
-definition, do $a$ and $a'$ convey the same information? This approach would 
-allow to pass from a scenario in which there are as many classes as instances 
-into a binary one: are these answers related or not? Obviously, under this 
-setting the questions' information can be used as well: whether $a,a'$ are 
-related is not the only relevant aspect. Also whether $q,q'$ are. 
+seems not such a good idea, as not enough information would exist to model each 
+class. As argued in Section~\ref{sec:learning}, when learning on multiple 
+classes, the necessary amount of instances tends to be huge. Instead, I would 
+opt for a paraphrase-like approach. That is, given $a$, and $a'$, are they a 
+(partial) paraphrase of each other? In a more relaxed definition, do $a$ and 
+$a'$ convey the same information? This approach would allow to pass from a 
+scenario in which there are as many classes as instances into a binary one: are 
+these answers related or not? Obviously, under this setting the questions' 
+information can be used as well: whether $a,a'$ are related is not the only 
+relevant aspect. Also whether $q,q'$ are. Also, once the binary problem is 
+solved, the new question can of course be added to the macro bin.
 
 Another ``flavour'' of the proposed problem is that of determining whether a 
-answer ticket answer is ``based'' on a templated one. This problem is more 
-similar to that text re-use identification (which most ``famous'' variant is 
-that of plagiarism detection). In this case, the problem is, given text $a$ and 
-$a'$, is $a'$ derived from the contents in $a$? Common approaches to this 
-problem consist of a direct comparison of flexible, still expressive, 
-representations of the texts. For instance, simple representations based on 
-characters or word $n$-grams have shown remarkable performance~\cite{Lyon:04}. 
-More sophisticated models use dotplot~\cite{Basile:2009} and even semantic 
-models~\cite{Gabrilovich:07}, also across languages~\cite{Potthast:11}. 
-Obviously, a combination of these representations can be fed into a machine 
-learning algorithm to learn  to differentiate between potential derivation or 
-not, or simply to generate a ranking with the most likely candidates.% 
+ticket answer is ``based'' on a templated one. This problem is more similar to 
+that of text re-use identification, an information retrieval challenge.  
+% (which most ``famous'' variant is that of plagiarism detection). 
+In this case, the problem is, given texts $a$ and $a'$, is $a'$ derived from the 
+contents in $a$? Common approaches to this problem consist of a direct 
+comparison of flexible, still expressive, representations of the texts. For 
+instance, simple representations based on characters or word $n$-grams have 
+shown remarkable performance~\cite{Lyon:04}. More sophisticated models use 
+dotplot~\cite{Basile:2009} and even semantic models~\cite{Gabrilovich:07}, also 
+across languages~\cite{Potthast:11}. Obviously, a combination of these 
+representations can be fed into a machine learning algorithm to learn to 
+differentiate between potential derivation or not, or simply to generate a 
+ranking with the most likely candidates.% 
 \footnote{An overview of many models for text re-use detection can be found 
 in~\cite{BarronPhd:12}.}
 
-ch class question $q'$, t seems like 
-in this 
+Of course a simple out-of-the-box option to consider would be a standard search 
+engine. Perhaps slight modifications to the ranking function would be 
+necessary. The reason is that we are not talking about a standard 
+information retrieval problem, in which we have a set of documents and a (short) 
+query. This is a retrieve-by-example problem: we have documents in the index 
+(questions) and our query is another document (another question). 
 
 
 \section{Model(s) to Classify Questions}
-% b) Assuming you have a dataset of questions, where each one is labelled with
-% the macro class it belongs to, describe one method you would explore to create 
-% a classifier that can label new, previously unseen questions. Also, don't 
-% forget to explain how you'd engineer the features used to learn your 
-% classifier.
-Problem ``b'' can be formally defined as follows. Let $q\in c_i$ be a previously 
-observed question that belongs to macro-class $c_i$%
-\footnote{What exactly means macro-class (opposite to a simple class) should be 
-discussed.}
-Let $Q$ be a collection of questions, each of which belongs to class $c\in C_I$. 
-Build a classifier which predicts the most likely class of a new question $q_n$. 
-That is, this problems falls into the classical multi-class scenario. Multiple 
-machine learning models exist to approach this kind of problem, ranging from 
-simple decision trees to more sophisticated convolutional models.%
-\footnote{Maybe remove this ``fancy'' convolutional terms}
+
+Problem: assuming you have a dataset of questions, where each one is labelled 
+with the macro class it belongs to, describe one method you would explore to 
+create a classifier that can label new, previously unseen questions. Also, don't 
+forget to explain how you'd engineer the features used to learn your classifier.
+\medskip
+
+This problem can be formally defined as follows. Let $q\in c_i$ be a 
+previously observed question that belongs to macro-class $c_i$.%
+\footnote{What exactly means macro-class (opposite to a simple class) is open 
+to discussion.}
+Let $Q$ be a collection of questions, each of which belongs to one class 
+$c_i$, $i=[1,\ldots,I]$. Build a classifier which predicts the most likely 
+class of a new question $q_n$. That is, this problems falls into the classical 
+multi-class scenario. Multiple machine learning models exist to approach this 
+kind of problem, ranging from simple decision trees to more sophisticated 
+convolutional models.%
+\footnote{\abc{Maybe remove this ``fancy'' convolutional terms}}
 The distribution of the classes is currently unknown, which causes the selection 
 of the best model difficult. For instance, if there was a dominant class, that 
 is, a class with a highly representative amount of instances in the training 
-set, even a decision tree could be considered, as this kind of model do well 
+set, even a decision tree could be considered, as this kind of models do well 
 with imbalanced datasets. Still, the first option seems to be to apply a 
 multi-class support vector machine (SVM)~\cite{Joachims:99}; for 
 instance, in the form of an ensemble of binary classifiers. That is, $I$ binary 
@@ -232,12 +239,15 @@ maximum score among all the classifiers.
 
 It is worth noting that this is not posed as a paraphrasing problem. That is, 
 the task is not determining whether $q_i$ and $q_j$ are similar to each other. 
-Instead, the task consists of determining whether the new question $q$ belongs 
-to the same macro-class as a set of questions $Q$. As a result, it is not 
-unreasonable to approach the problem with models such as $k$ nearest neighbors. 
-Of course, before opting for such a model, it would be necessary to prove before 
-hand if a characterisation is at hand which actually causes the instances that 
-belong to the same class to fall close within the vector space. 
+Still, similarly to the idea discussed in Section~\ref{sec:answers}, the 
+classes could become bins and $q_n$ would be assigned to that ``macro-class'' 
+with the instances which are most-likely paraphrases of $q_n$. Going 
+one step back, as the task consists of determining whether the new 
+question $q_n$ belongs to the same macro-class as a set of questions $Q$, it is 
+not unreasonable to approach the problem with models such as $k$ nearest 
+neighbours. Of course, before opting for such a model, it would be necessary to 
+prove beforehand if a characterisation is at hand which actually causes the 
+instances that belong to the same class to fall close within the vector space. 
 
 \subsection{Preliminary Feature Engineering}
 
@@ -249,22 +259,29 @@ inference ---if $q_1$ belongs to class $i$ and $sim(q_1,q_2)\rightarrow 1$, it
 is very likely that both questions belong to the same class. 
 
 Another bunch of features I would consider would consist of the so called 
-explicit semantic analysis (ESA)~\cite{Gabrilovich:07}. In summary, 
-ESA takes advantage of a large reference corpus, usually containing a manifold 
-of encyclopedic articles. ESA represents a text as a vector in which each 
+explicit semantic analysis (ESA)~\cite{Gabrilovich:07}. In brief, ESA takes 
+advantage of a large reference corpus ---usually containing a manifold of 
+encyclopedic articles---, and represents a text as a vector in which each 
 dimension is activated by the similarity between the text and the article 
-contents. As a result, identifying the topics covered in a question might 
-represent valuable information to determine if it belongs to a given 
-macro-class. Obviously, ESA could be computed both at question and at word 
-label. In the later case, the representation vector slice would consists of 
+contents. Identifying the topics covered in a question might represent valuable 
+information to determine if it belongs to a given macro-class. The similarity 
+between the ESA representations of the two implied questions would play the role 
+of yet another feature. ESA could be computed both at question and at word 
+label. In the later case, the representation vector slice would consist of the
 average over all the words in $q$.
 
 Another subset of features would be vocabulary-based. With statistical weighting 
 models such as the well known $tf$-$idf$, I would identify the likelihood of a 
-given keyword of belonging to given class. In a clustering-like fashion, we can 
+given keyword of belonging to each class. In a clustering-like fashion, we can 
 identify the keywords with the highest and lowest association levels to each of 
 the classes. A selection of the most discriminating keywords would be considered 
-as binary features: whether keyword $k$ appears or not in the question. 
+as binary features: whether keyword $k$ appears or not in the question. Indeed, 
+some approaches exist that consider each token in the text as a feature. 
+Nevertheless, I am not particularly in favour of such an approach, as the 
+representations could become highly sparse and the improvements tend to be 
+fairly small.
+
+
 
 % case we are more interested in the subject, in the topic of the class. 
 % Therefore, in principle I would opt for ass or which be definition of tven a set 
@@ -277,24 +294,30 @@ as binary features: whether keyword $k$ appears or not in the question.
 \label{sec:learning}
 % Note: We can assume the training set has between 1,000 and 100,000 instances, 
 % and between 10 and 1000 classes.
-The problem exposes different potential scenarios, which depend on two 
-parameters: number of instances and number of classes. The range of instances 
-lies in the range $s_i\in [1,000, 10,000]$, whereas the number of classes lies 
-in the range $s_c\in [10,1000]$. I will discard the extreme cases in which 
-$s_i\approx s_c$ as a straight learning strategy would hardly learn anything and 
-the problem could be reduced to a 1-nearest-neighbor decision taking. In this 
-case, some structure could be discovered by hierarchical clustering of the 
-training data, which could help to find the most similar instances to the new 
-one. 
+Regardless of the task, different scenarios have been proposed and now I 
+discuss on them. The potential scenarios depend on two parameters: number of 
+instances and number of classes. The range of instances lies in the range 
+$s_i\in [1,000, 100,000]$, whereas the number of classes lies in the range 
+$s_c\in [10,1,000]$. 
 
-Beside these extreme cases, I will explore the potential strategies depending on 
+I will discard the extreme cases in which $s_i\approx s_c$ as a straight 
+learning strategy would hardly learn anything and the problem could be reduced 
+to a $1$-nearest-neighbour decision taking. In this case, some structure could 
+be discovered by hierarchical clustering of the training data, which could help 
+to find the most similar instances to the new one. That is, if there where 
+classes within other super-classes, the structure of such network could be 
+exploited.
+
+Beside the extreme cases, I will explore the potential strategies depending on 
 the two variables in isolation. Let us consider $s_i$: the number of instances. 
 For relatively small amounts of data, that is, a few thousand, I would 
-definitively opt for $n$-fold cross validation (even hold out). This would allow 
-for tuning the parameters of the model and get more stable estimations of the 
-outcomes when facing new instances. The closer to the $10,000$ extreme, the more 
-likely I would opt for a standard three-set partition: training, development, 
-and test. 
+definitively opt for a $n$-fold cross validation (even hold out) learning 
+strategy. This would allow for tuning the 
+parameters of the model and get more stable estimations of the outcomes when 
+facing new instances. The closer to the $100,000$ extreme, the more likely I 
+would opt for a standard three-set partition: training, development, and test. 
+Of course, this would not prevent from the use of cross-validation on the 
+training set. 
 
 Regarding $s_c$, the number of classes, let us assume, just for a moment, that 
 we opt for using support vector machines. I would opt for the standard 
@@ -314,9 +337,11 @@ at reasonable temporal cost, even if on commodity hardware.
 Other more sophisticated strategies have been proposed, such 
 as~\cite{JMLR:v15:gupta14a}, which could be explored.%
 \footnote{Still I have to admit I am not familiar with this kind of technique.}
-Observe that, in order to converge to reasonable models, millions of instances 
-are usually required to when dealing with thousands of classes (cf. Table~4 
-in~\cite{JMLR:v15:gupta14a}).%
+Observe that, in order to converge to reasonable models, huge amounts of 
+instances are usually required when dealing with thousands of classes (cf. 
+Table~4 in~\cite{JMLR:v15:gupta14a}, where they use millions). Therefore, I 
+would try such strategies only if the number of instances gets closer to 
+$100,000$ and, hopefully, larger.%
 \footnote{I have observed that deep learning approaches (e.g., deep 
 neural networks) promise to deal with problems with thousands of classes as 
 well. Still, as in the discussed case, they require huge amounts of 
@@ -324,7 +349,7 @@ data.}
 % ive ven if the which mall amounts exist for those cases in I would opt for 
 % a multiclass-settingven sim1,000, as th classeshe keywords gain,four 
 
-\section{Implementation Specificities (potential section)}
+% \section{Implementation Specificities (potential section)}
 %
 % The following two commands are all you need in the
 % initial runs of your .tex file to
