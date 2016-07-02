@@ -143,18 +143,18 @@ seems not such a good idea, as not enough information would exist to model each
 class. As argued in Section~\ref{sec:learning}, when learning on multiple 
 classes, the necessary amount of instances tends to be huge. Instead, I would 
 opt for a paraphrase-like approach. That is, given $a$, and $a'$, are they a 
-(partial) paraphrase of each other? In a more relaxed definition, do $a$ and 
+(partial) paraphrase of each other? In a more relaxed fashion, do $a$ and 
 $a'$ convey the same information? This approach would allow to pass from a 
 scenario in which there are as many classes as instances into a binary one: are 
 these answers related or not? Obviously, under this setting the questions' 
 information can be used as well: whether $(a,a')$ are related is not the only 
-relevant aspect; also whether $(q,q')$ are. 
+relevant information to make a decision; also whether $(q,q')$ are. 
 %Also, once the binary problem is solved, the new question can of course be 
 % added to the macro bin.
 
 Another ``flavour'' of the proposed problem is that of determining whether a 
-ticket answer is ``based'' on a templated one. This problem is closer to that of 
-text re-use identification; an information retrieval one.  
+ticket answer is ``based'' on a templated one. This is closer to that of 
+text re-use identification; an information retrieval problem.  
 % (which most ``famous'' variant is that of plagiarism detection). 
 In this case, the problem is, given texts $a$ and $a'$, is $a'$ derived from the 
 contents in $a$? Common approaches to this problem consist of a direct 
@@ -166,8 +166,7 @@ representations~\cite{Gabrilovich:07}, also across languages~\cite{Potthast:11}.
 Obviously, a combination of these representations can be fed into a machine 
 learning algorithm to learn to differentiate between potential derivation or 
 not, or simply to generate a ranking with the most likely candidates.% 
-\footnote{An overview of many models for text re-use detection can be found 
-in~\cite{BarronPhd:12}.}
+% \footnote{An overview of many models for text re-use detection can be .}
 
 Of course a simple out-of-the-box option to consider would be a standard search 
 engine. Perhaps this approach would require slight modifications to the ranking 
@@ -175,7 +174,11 @@ function. The reason is that we are not talking about a standard information
 retrieval problem, in which we have a set of documents and a (short) query. This 
 is a retrieve-by-example problem: we have documents in the index (answers) and 
 our query is another document (another answer). 
+\medskip
 
+I have experience in all these approaches. From the identification of 
+paraphrases to the identification of derived and re-used texts. See for 
+instance~\cite{BarronPhd:12}.
 
 \section{Model(s) to Classify Questions}
 
@@ -202,9 +205,9 @@ is, a class with a highly representative amount of instances in the training
 set, even a decision tree could be considered, as this kind of models do well 
 with imbalanced datasets. Still, the first option seems to be to apply a 
 multi-class support vector machine (SVM)~\cite{Joachims:99}; for 
-instance, in the form of an ensemble of binary classifiers. That is, $I$ binary 
-SVMs are built, one per class, and the predicted class becomes the one with the 
-maximum score among all the classifiers. 
+instance, in the form of an ensemble of binary classifiers. That is, $I$ 
+one-vs-the-rest binary SVMs are built, one per class, and the predicted class 
+becomes the one with the maximum score among all the classifiers. 
 
 It is worth noting that this is not posed as a paraphrasing problem. That is, 
 the task is not determining whether $q_i$ and $q_j$ are similar to each other. 
@@ -228,7 +231,7 @@ in our case such similarities would still play an important role in the
 inference ---if $q_1$ belongs to class $i$ and $sim(q_1,q_2)\rightarrow 1$, it 
 is very likely that both questions belong to the same class. 
 
-Another bunch of features worth considering would be the so called explicit 
+Another set of features worth considering is derived from the so called explicit 
 semantic analysis (ESA)~\cite{Gabrilovich:07}. In brief, ESA takes advantage of 
 a large reference corpus ---usually containing a manifold of encyclopedic 
 articles---, and represents a text as a vector in which each dimension is 
@@ -242,18 +245,20 @@ average over all the words in $q$.
 
 Another subset of features would be vocabulary-based. With statistical weighting 
 models such as the well known $tf$-$idf$, I would identify the likelihood of a 
-given keyword of belonging to each class. In a clustering-like fashion, we can 
-identify the keywords with the highest and lowest association levels to each of 
-the classes. A selection of the most discriminating keywords would be considered 
-as binary features: whether keyword $k$ appears or not in the question. Indeed, 
-some approaches exist that consider each token in the text as a feature. 
-Nevertheless, I am not particularly in favour of such approaches, as the 
-representations could become highly sparse and the improvements tend to be 
-fairly small.
+given keyword of belonging to each class; that is, $p(k\mid c)$. In a 
+clustering-like fashion, we can identify the keywords with the highest and 
+lowest association levels to each of the classes. A selection of the most 
+discriminating keywords would be considered as binary features: whether keyword 
+$k$ appears or not in the question. Indeed, some approaches exist that consider 
+each token in the text as a feature. Nevertheless, I am not particularly in 
+favour of such approaches, as the representations tend to become highly sparse 
+and the achieved improvement tends to be fairly small.
+\medskip
 
+I have been working on very similar problems as this one during the last two 
+years. The papers on this topic are currently under review.
 
-
-% case we are more interested in the subject, in the topic of the class. 
+% case we are more interested in the subject, in the topic of the class. % 
 % Therefore, in principle I would opt for ass or which be definition of tven a set 
 % of questions $Q$ belonging to  represents 
 % Both the answer and question identification problems can be defined as a ranking 
@@ -266,8 +271,8 @@ fairly small.
 % and between 10 and 1000 classes.
 Regardless of the task, different scenarios have been proposed and now I discuss 
 on them. The potential scenarios depend on two parameters: number of instances 
-and number of classes. The number of instances lies in the range $s_i\in [1000, 
-100000]$, whereas the number of classes lies in the range $s_c\in [10, 1000]$. 
+and number of classes. The number of instances lies in the range $s_i\in [1k, 
+100k]$, whereas the number of classes lies in the range $s_c\in [10, 1k]$. 
 
 I will discard the extreme cases in which $s_i\approx s_c$ as a straight 
 learning strategy would hardly learn anything and the problem could be reduced 
@@ -283,9 +288,9 @@ For relatively small amounts of data, that is, a few thousand, I would
 definitively opt for an $n$-fold cross validation (even hold out) learning 
 strategy. This would allow for tuning the 
 parameters of the model and get more stable estimations of the outcomes when 
-facing new instances. The closer to the $100,000$ extreme, the more likely I 
+facing new instances. The closer to the $100k$ extreme, the more likely I 
 would opt for a standard three-set partition: training, development, and test. 
-Of course, this would not prevent from the use of cross-validation on the 
+Of course, this would not prevent the use of cross-validation on the 
 training set. 
 
 Regarding $s_c$, the number of classes, let us assume, just for a moment, that 
@@ -305,12 +310,12 @@ at reasonable temporal cost, even if on commodity hardware.
 
 Other more sophisticated strategies have been proposed, such 
 as~\cite{JMLR:v15:gupta14a}, which could be explored.%
-\footnote{Still I have to admit I am not familiar with this kind of technique.}
+\footnote{I have to admit I am not familiar with these techniques.}
 Observe that, in order to converge to reasonable models, huge amounts of 
 instances are usually required when dealing with thousands of classes (cf. 
 Table~4 in~\cite{JMLR:v15:gupta14a}, where they use millions). Therefore, I 
 would try such strategies only if the number of instances gets closer to 
-$100,000$ and, hopefully, larger.%
+$100k$ and, hopefully, larger.%
 \footnote{I have observed that deep learning approaches (e.g., deep 
 neural networks) promise to deal with problems with thousands of classes as 
 well. Still, as in the discussed case, they require huge amounts of 
