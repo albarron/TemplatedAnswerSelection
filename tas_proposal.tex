@@ -1,96 +1,68 @@
-% This is "sig-alternate.tex" V2.1 April 2013
-% This file should be compiled with V2.5 of "sig-alternate.cls" May 2012
 %
-% This example file demonstrates the use of the 'sig-alternate.cls'
-% V2.5 LaTeX2e document class file. It is for those submitting
-% articles to ACM Conference Proceedings WHO DO NOT WISH TO
-% STRICTLY ADHERE TO THE SIGS (PUBS-BOARD-ENDORSED) STYLE.
-% The 'sig-alternate.cls' file will produce a similar-looking,
-% albeit, 'tighter' paper resulting in, invariably, fewer pages.
+% File ACL2016.tex
 %
-% ----------------------------------------------------------------------------------------------------------------
-% This .tex file (and associated .cls V2.5) produces:
-%       1) The Permission Statement
-%       2) The Conference (location) Info information
-%       3) The Copyright Line with ACM data
-%       4) NO page numbers
-%
-% as against the acm_proc_article-sp.cls file which
-% DOES NOT produce 1) thru' 3) above.
-%
-% Using 'sig-alternate.cls' you have control, however, from within
-% the source .tex file, over both the CopyrightYear
-% (defaulted to 200X) and the ACM Copyright Data
-% (defaulted to X-XXXXX-XX-X/XX/XX).
-% e.g.
-% \CopyrightYear{2007} will cause 2007 to appear in the copyright line.
-% \crdata{0-12345-67-8/90/12} will cause 0-12345-67-8/90/12 to appear in the copyright line.
-%
-% ---------------------------------------------------------------------------------------------------------------
-% This .tex source is an example which *does* use
-% the .bib file (from which the .bbl file % is produced).
-% REMEMBER HOWEVER: After having produced the .bbl file,
-% and prior to final submission, you *NEED* to 'insert'
-% your .bbl file into your source .tex file so as to provide
-% ONE 'self-contained' source file.
-%
-% ================= IF YOU HAVE QUESTIONS =======================
-% Questions regarding the SIGS styles, SIGS policies and
-% procedures, Conferences etc. should be sent to
-% Adrienne Griscti (griscti@acm.org)
-%
-% Technical questions _only_ to
-% Gerald Murray (murray@hq.acm.org)
-% ===============================================================
-%
-% For tracking purposes - this is V2.0 - May 2012
 
-\documentclass{sig-alternate-05-2015}
-\usepackage[numbers]{natbib}
-\usepackage{amsfonts}
-\usepackage{tabularx}
+\documentclass[11pt]{article}
+\usepackage{acl2016}
+\usepackage{times}
+\usepackage{latexsym}
+
+\aclfinalcopy % Uncomment this line for the final submission
+%\def\aclpaperid{***} %  Enter the acl Paper ID here
+
+% To expand the titlebox for more authors, uncomment
+% below and set accordingly.
+% \addtolength\titlebox{.5in}
+
+\usepackage{url}
 \usepackage{color}
-\newcommand{\abc}[1]{{\color{red} #1}}
 \usepackage{amsmath}
-
-\begin{document}
-
-\conferenceinfo{}{June 2016}
+\usepackage{graphicx}
 
 
-%
-% --- Author Metadata here ---
-% \conferenceinfo{}{'97 El Paso, Texas USA}
-%\CopyrightYear{2007} % Allows default copyright year (20XX) to be over-ridden - IF NEED BE.
-%\crdata{0-12345-67-8/90/01}  % Allows default copyright data (0-89791-88-6/97/05) to be over-ridden - IF NEED BE.
-% --- End of Author Metadata ---
+\newcommand\BibTeX{B{\sc ib}\TeX}
+
+
+
+\newcommand{\alex}[1]{{\color{red} #1}}
+\newcommand{\bluett}[1]{\textcolor{blue}{\tt #1}}
+\newcommand{\abc}[1]{\textcolor{magenta}{#1}}
+\newcommand{\gio}[1]{\textcolor{green}{#1}}
+
+\newcommand{\cf}{cf.~}
+\newcommand{\ie}{i.e.,~}
+\newcommand{\eg}{e.g.,~}
+%\setlength\titlebox{5cm}
+\setlength\titlebox{3.8cm}
+
+\newcommand{\Ni}{({\em i})~}
+\newcommand{\Nii}{({\em ii})~}
+\newcommand{\Niii}{({\em iii})~}
+\newcommand{\Niv}{({\em iv})~}
+\newcommand{\Nv}{({\em v})~}
+\newcommand{\Nvi}{({\em vi})~}
+
+\usepackage{xspace} 
+
+\newcommand{\good}{\emph{good}\xspace}
+\newcommand{\bad}{\emph{bad}\xspace}
+\newcommand{\dial}{\emph{dialogue}\xspace}
+\newcommand{\pot}{\emph{potential}\xspace}
+\newcommand{\rest}{\emph{rest}\xspace}
+
+\newcommand{\goods}{\emph{good}}
+\newcommand{\bads}{\emph{bad}}
+\newcommand{\pots}{\emph{potential}}
+
 
 \title{A Question--Answer Selection Model Proposal}
-% Use the \alignauthor commands to handle the names
-% and affiliations for an 'aesthetic maximum' of six authors.
-% Add names, affiliations, addresses for
-% the seventh etc. author(s) as the argument for the
-% \additionalauthors command.
-% These 'additional authors' will be output/set for you
-% without further effort on your part as the last section in
-% the body of your article BEFORE References or any Appendices.
 
-\numberofauthors{1} %  in this sample file, there are a *total*
-% of EIGHT authors. SIX appear on the 'first-page' (for formatting
-% reasons) and the remaining two appear in the \additionalauthors section.
-%
+
+
 \author{Alberto Barr\'on-Cede\~no}
-% You can go ahead and credit any number of authors here,
-% e.g. one 'row of three' or two rows (consisting of one row of three
-% and a second row of one, two or three).
-%
-% The command \alignauthor (no curly braces needed) should
-% precede each author name, affiliation/snail-mail address and
-% e-mail address. Additionally, tag each line of
-% affiliation/address with \affaddr, and tag the
-% e-mail address with \email.
+\date{}
 
-
+\begin{document}
 \maketitle
 % \begin{abstract}
 % \end{abstract}
@@ -132,10 +104,10 @@
 \label{sec:def}
 
 \begin{description}
-\item{Macro} Also known as templated response or answer. Is a previously 
-existing answer that now is part of an answers' repository.
-\item{Ticket} Question--answer pair that a customer service team has received, 
-and solved. f 
+\item{Macro.} Also known as templated response or answer. Is a previously 
+existing answer that is part of a repository of answers.
+\item{Ticket.} Question--answer pair that a customer service team has received, 
+and solved. 
 \end{description}
 
 
@@ -152,10 +124,6 @@ and solved. f
 % \begin{itemize}
 % \item 
 % \end{itemize}
-
-
-
-
 
 \section{Model(s) to Classify Answers}
 \label{sec:answers}
@@ -179,33 +147,34 @@ opt for a paraphrase-like approach. That is, given $a$, and $a'$, are they a
 $a'$ convey the same information? This approach would allow to pass from a 
 scenario in which there are as many classes as instances into a binary one: are 
 these answers related or not? Obviously, under this setting the questions' 
-information can be used as well: whether $a,a'$ are related is not the only 
-relevant aspect. Also whether $q,q'$ are. Also, once the binary problem is 
-solved, the new question can of course be added to the macro bin.
+information can be used as well: whether $(a,a')$ are related is not the only 
+relevant aspect; also whether $(q,q')$ are. 
+%Also, once the binary problem is solved, the new question can of course be 
+% added to the macro bin.
 
 Another ``flavour'' of the proposed problem is that of determining whether a 
-ticket answer is ``based'' on a templated one. This problem is more similar to 
-that of text re-use identification, an information retrieval challenge.  
+ticket answer is ``based'' on a templated one. This problem is closer to that of 
+text re-use identification; an information retrieval one.  
 % (which most ``famous'' variant is that of plagiarism detection). 
 In this case, the problem is, given texts $a$ and $a'$, is $a'$ derived from the 
 contents in $a$? Common approaches to this problem consist of a direct 
 comparison of flexible, still expressive, representations of the texts. For 
 instance, simple representations based on characters or word $n$-grams have 
 shown remarkable performance~\cite{Lyon:04}. More sophisticated models use 
-dotplot~\cite{Basile:2009} and even semantic models~\cite{Gabrilovich:07}, also 
-across languages~\cite{Potthast:11}. Obviously, a combination of these 
-representations can be fed into a machine learning algorithm to learn to 
-differentiate between potential derivation or not, or simply to generate a 
-ranking with the most likely candidates.% 
+dotplot techniques~\cite{Basile:2009} and even semantic 
+representations~\cite{Gabrilovich:07}, also across languages~\cite{Potthast:11}. 
+Obviously, a combination of these representations can be fed into a machine 
+learning algorithm to learn to differentiate between potential derivation or 
+not, or simply to generate a ranking with the most likely candidates.% 
 \footnote{An overview of many models for text re-use detection can be found 
 in~\cite{BarronPhd:12}.}
 
 Of course a simple out-of-the-box option to consider would be a standard search 
-engine. Perhaps slight modifications to the ranking function would be 
-necessary. The reason is that we are not talking about a standard 
-information retrieval problem, in which we have a set of documents and a (short) 
-query. This is a retrieve-by-example problem: we have documents in the index 
-(questions) and our query is another document (another question). 
+engine. Perhaps this approach would require slight modifications to the ranking 
+function. The reason is that we are not talking about a standard information 
+retrieval problem, in which we have a set of documents and a (short) query. This 
+is a retrieve-by-example problem: we have documents in the index (answers) and 
+our query is another document (another answer). 
 
 
 \section{Model(s) to Classify Questions}
@@ -216,17 +185,17 @@ create a classifier that can label new, previously unseen questions. Also, don't
 forget to explain how you'd engineer the features used to learn your classifier.
 \medskip
 
-This problem can be formally defined as follows. Let $q\in c_i$ be a 
-previously observed question that belongs to macro-class $c_i$.%
-\footnote{What exactly means macro-class (opposite to a simple class) is open 
-to discussion.}
-Let $Q$ be a collection of questions, each of which belongs to one class 
-$c_i$, $i=[1,\ldots,I]$. Build a classifier which predicts the most likely 
-class of a new question $q_n$. That is, this problems falls into the classical 
-multi-class scenario. Multiple machine learning models exist to approach this 
-kind of problem, ranging from simple decision trees to more sophisticated 
-convolutional models.%
-\footnote{\abc{Maybe remove this ``fancy'' convolutional terms}}
+This problem can be formally defined as follows. Let $q\in c_i$ be a previously 
+observed question that belongs to macro-class $c_i$.%
+\footnote{What exactly macro-class means (opposite to a simple class) is open 
+to discussion. I am assuming the prefix macro stands for the macros in the 
+collection and not for a class which contains plenty of sub-classes.}
+Let $Q$ be a collection of questions, each of which belongs to one class $c_i$, 
+$i=[1,\ldots,I]$. Build a classifier that predicts the most likely class of a 
+new question $q_n$. That is, this is a multi-class classification problem. 
+Multiple machine learning models exist to approach this kind of problem, ranging 
+from simple decision trees to more sophisticated probabilitic models. %
+% \footnote{\abc{Maybe remove this ``fancy'' convolutional terms}}
 The distribution of the classes is currently unknown, which causes the selection 
 of the best model difficult. For instance, if there was a dominant class, that 
 is, a class with a highly representative amount of instances in the training 
@@ -247,7 +216,8 @@ question $q_n$ belongs to the same macro-class as a set of questions $Q$, it is
 not unreasonable to approach the problem with models such as $k$ nearest 
 neighbours. Of course, before opting for such a model, it would be necessary to 
 prove beforehand if a characterisation is at hand which actually causes the 
-instances that belong to the same class to fall close within the vector space. 
+instances that belong to the same class to fall close within the representation 
+space. 
 
 \subsection{Preliminary Feature Engineering}
 
@@ -258,16 +228,16 @@ in our case such similarities would still play an important role in the
 inference ---if $q_1$ belongs to class $i$ and $sim(q_1,q_2)\rightarrow 1$, it 
 is very likely that both questions belong to the same class. 
 
-Another bunch of features I would consider would consist of the so called 
-explicit semantic analysis (ESA)~\cite{Gabrilovich:07}. In brief, ESA takes 
-advantage of a large reference corpus ---usually containing a manifold of 
-encyclopedic articles---, and represents a text as a vector in which each 
-dimension is activated by the similarity between the text and the article 
-contents. Identifying the topics covered in a question might represent valuable 
+Another bunch of features worth considering would be the so called explicit 
+semantic analysis (ESA)~\cite{Gabrilovich:07}. In brief, ESA takes advantage of 
+a large reference corpus ---usually containing a manifold of encyclopedic 
+articles---, and represents a text as a vector in which each dimension is 
+activated by the similarity between the text and the article contents. 
+Identifying the topics covered in a question might represent valuable 
 information to determine if it belongs to a given macro-class. The similarity 
 between the ESA representations of the two implied questions would play the role 
 of yet another feature. ESA could be computed both at question and at word 
-label. In the later case, the representation vector slice would consist of the
+label. In the later case, the representation vector slice would consist of the 
 average over all the words in $q$.
 
 Another subset of features would be vocabulary-based. With statistical weighting 
@@ -277,7 +247,7 @@ identify the keywords with the highest and lowest association levels to each of
 the classes. A selection of the most discriminating keywords would be considered 
 as binary features: whether keyword $k$ appears or not in the question. Indeed, 
 some approaches exist that consider each token in the text as a feature. 
-Nevertheless, I am not particularly in favour of such an approach, as the 
+Nevertheless, I am not particularly in favour of such approaches, as the 
 representations could become highly sparse and the improvements tend to be 
 fairly small.
 
@@ -294,24 +264,23 @@ fairly small.
 \label{sec:learning}
 % Note: We can assume the training set has between 1,000 and 100,000 instances, 
 % and between 10 and 1000 classes.
-Regardless of the task, different scenarios have been proposed and now I 
-discuss on them. The potential scenarios depend on two parameters: number of 
-instances and number of classes. The range of instances lies in the range 
-$s_i\in [1,000, 100,000]$, whereas the number of classes lies in the range 
-$s_c\in [10,1,000]$. 
+Regardless of the task, different scenarios have been proposed and now I discuss 
+on them. The potential scenarios depend on two parameters: number of instances 
+and number of classes. The number of instances lies in the range $s_i\in [1000, 
+100000]$, whereas the number of classes lies in the range $s_c\in [10, 1000]$. 
 
 I will discard the extreme cases in which $s_i\approx s_c$ as a straight 
 learning strategy would hardly learn anything and the problem could be reduced 
 to a $1$-nearest-neighbour decision taking. In this case, some structure could 
 be discovered by hierarchical clustering of the training data, which could help 
-to find the most similar instances to the new one. That is, if there where 
-classes within other super-classes, the structure of such network could be 
-exploited.
+to find the most similar instances against the new one. That is, if there 
+where classes within other super-classes, the structure of such network could 
+be exploited.
 
 Beside the extreme cases, I will explore the potential strategies depending on 
 the two variables in isolation. Let us consider $s_i$: the number of instances. 
 For relatively small amounts of data, that is, a few thousand, I would 
-definitively opt for a $n$-fold cross validation (even hold out) learning 
+definitively opt for an $n$-fold cross validation (even hold out) learning 
 strategy. This would allow for tuning the 
 parameters of the model and get more stable estimations of the outcomes when 
 facing new instances. The closer to the $100,000$ extreme, the more likely I 
@@ -321,7 +290,7 @@ training set.
 
 Regarding $s_c$, the number of classes, let us assume, just for a moment, that 
 we opt for using support vector machines. I would opt for the standard 
-multi-class setting based in $s_c$ one-vs-the-rest classifiers. Hundreds of 
+multi-class setting based on $s_c$ one-vs-the-rest classifiers. Hundreds of 
 classes would require other strategies, such as 
 DAGSVM~\cite{large-margin-dags-for-multiclass-classification}. In this kind of 
 strategy, $s_c(s_c-1)/2$ (and not $s_c^2$!) binary classifiers are arranged 
@@ -354,7 +323,8 @@ data.}
 % The following two commands are all you need in the
 % initial runs of your .tex file to
 % produce the bibliography for the citations in your paper.
-\bibliographystyle{abbrv}
+% \bibliographystyle{abbrv}
+\bibliographystyle{acl2016}
 \bibliography{sigproc}  % sigproc.bib is the name of the Bibliography in this case
 % You must have a proper ".bib" file
 %  and remember to run:
